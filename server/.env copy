@@ -1,0 +1,4 @@
+USERNAME=
+PASSWORD=
+HOST=localhost:3306
+USER_SCHEMA=users_db
