@@ -5,19 +5,26 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 var (
-	Client   *sql.DB
-	username = ""
-	password = ""
-	host     = "localhost:3306"
-	schema   = "users_db"
+	Client *sql.DB
 )
 
 func init() {
+	envErr := godotenv.Load()
+	if envErr != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_HOST")
+	schema := os.Getenv("USER_SCHEMA")
 
 	// username:password@tcp(host)/user_schema
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8", username, password, host, schema)

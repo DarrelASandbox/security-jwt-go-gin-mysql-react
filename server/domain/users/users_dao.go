@@ -1,6 +1,8 @@
 package users
 
 import (
+	"fmt"
+
 	"github.com/DarrelASandbox/security-jwt-go-gin-mysql-react/datasource/mysql/users_db"
 	"github.com/DarrelASandbox/security-jwt-go-gin-mysql-react/utils/errors"
 )
@@ -22,11 +24,13 @@ func (user *User) Save() *errors.RestErr {
 	// `users_controller.go` to `users_service.go` to `users_dao.go`
 	insertResult, saveErr := stmt.Exec(user.FirstName, user.LastName, user.Email, user.Password)
 	if saveErr != nil {
+		fmt.Println("1", saveErr)
 		return errors.NewInternalServerError("database error")
 	}
 
 	userID, err := insertResult.LastInsertId()
 	if err != nil {
+		fmt.Println("2", err)
 		return errors.NewInternalServerError("database error")
 	}
 

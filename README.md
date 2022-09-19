@@ -38,6 +38,12 @@ go mod init github.com/DarrelASandbox/security-jwt-go-gin-mysql-react
 go mod tidy
 ```
 
+- Create in mySQL: `users_db` -> `users` table
+  - id (Mark column as AUTO_INCREMENT)
+  - first_name
+  - last_name
+  - email
+  - password
 - `users_dto.go`: data transfer object
 - `users_dao.go`: data access object
 
