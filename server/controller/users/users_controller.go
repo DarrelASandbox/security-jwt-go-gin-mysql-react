@@ -8,8 +8,8 @@ import (
 	"github.com/DarrelASandbox/security-jwt-go-gin-mysql-react/domain/users"
 	"github.com/DarrelASandbox/security-jwt-go-gin-mysql-react/services"
 	"github.com/DarrelASandbox/security-jwt-go-gin-mysql-react/utils/errors"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 const (
@@ -50,9 +50,9 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
 		Issuer:    strconv.Itoa(int(result.ID)),
-		ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
 	})
 
 	token, err := claims.SignedString([]byte(JWTSecret))
@@ -74,7 +74,7 @@ func Get(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(*jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(cookie, &jwt.RegisteredClaims{}, func(*jwt.Token) (interface{}, error) {
 		return []byte(JWTSecret), nil
 	})
 
@@ -84,9 +84,9 @@ func Get(c *gin.Context) {
 		return
 	}
 
-	// set `claims` variable to be a type of `StandardClaims`
+	// set `claims` variable to be a type of .RegisteredClaims`
 	// so we can access `claims.Issuer`
-	claims := token.Claims.(*jwt.StandardClaims)
+	claims := token.Claims.(*jwt.RegisteredClaims)
 	issuer, err := strconv.ParseInt(claims.Issuer, 10, 64)
 	if err != nil {
 		restErr := errors.NewBadRequestError("user id should be a number")
