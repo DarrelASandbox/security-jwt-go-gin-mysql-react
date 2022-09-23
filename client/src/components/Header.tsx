@@ -1,20 +1,22 @@
 import { SyntheticEvent } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-interface Props {
-  firstName: string;
-  setFirstName: (firstName: string) => void;
-}
+import { logout } from '../actions/userAction';
+import { UserState } from '../reducers/userReducer';
+import { RootState } from '../store';
 
-const Header = ({ firstName, setFirstName }: Props) => {
+const Header = () => {
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector<RootState, UserState>(
+    (state: RootState) => state.userLogin
+  );
+  const { userInfo } = userLogin;
+
   const logoutHandler = async (e: SyntheticEvent) => {
     e.preventDefault();
-
-    await fetch('/api/logout', {
-      headers: { 'Content-Type': 'application/json', credentials: 'include' },
-    });
-
-    setFirstName('');
+    dispatch(logout());
   };
 
   return (
@@ -23,7 +25,7 @@ const Header = ({ firstName, setFirstName }: Props) => {
         <Navbar.Brand href="/">Go React Auth</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {firstName ? (
+          {userInfo ? (
             <Nav className="ms-auto">
               <Nav.Link onClick={logoutHandler}>Logout</Nav.Link>
             </Nav>
