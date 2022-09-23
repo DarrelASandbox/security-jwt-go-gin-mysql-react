@@ -2,22 +2,21 @@ import { SyntheticEvent, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../actions/userAction';
+
 import { FormContainer } from '../components';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const submitHandler = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ email, password }),
-    });
+    dispatch(login(email, password));
 
     navigate('/');
   };

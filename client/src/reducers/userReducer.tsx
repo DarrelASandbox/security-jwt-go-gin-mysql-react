@@ -6,7 +6,7 @@ import {
 } from '../constants/userConstants';
 
 export interface UserState {
-  loading?: boolean; // ? is optional
+  loading?: boolean; // ? means optional
   error?: string;
   userInfo: { firstName?: string; lastName?: string };
 }
@@ -16,7 +16,7 @@ interface Action {
   payload?: string;
 }
 
-export const userLoginReducer = (state: UserState, action: Action) => {
+export const userLoginReducer = (state: UserState = { userInfo: {} }, action: Action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
       return { loading: true };
