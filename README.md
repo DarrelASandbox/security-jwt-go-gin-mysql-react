@@ -34,9 +34,7 @@
   - [Bootswatch](https://bootswatch.com/)
     - Lux theme
   - [React Bootstrap](https://react-bootstrap.github.io/)
-  - Packages:
-    - `react-bootstrap`
-    - `bootstrap`
+  - [Type Checking Redux Thunks](https://redux.js.org/usage/usage-with-typescript#type-checking-redux-thunks)
 - **Deployment**
   - Build a static file for the client using `npm run build`
   - Serve that static file from the Go server (http.Serverfile)
