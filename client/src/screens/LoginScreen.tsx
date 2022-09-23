@@ -1,9 +1,11 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../actions/userAction';
+import { UserState } from '../reducers/userReducer';
+import { RootState } from '../store';
 
 import { FormContainer } from '../components';
 
@@ -12,7 +14,16 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
+  const userLogin = useSelector<RootState, UserState>(
+    (state: RootState) => state.userLogin
+  );
+  const { userInfo } = userLogin;
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userInfo !== undefined && userInfo.firstName) navigate('/');
+  }, [userInfo, navigate]);
 
   const submitHandler = async (e: SyntheticEvent) => {
     e.preventDefault();
